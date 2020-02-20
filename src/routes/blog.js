@@ -45,7 +45,7 @@ app.get('/', async (req, res) => {
           updateOn: post.updateOn,
         }));
         // console.log('postsList:', posts);
-        res.status(302).send(postsList);
+        res.status(200).send(postsList);
       }
     })
     .catch((err) => {
@@ -82,7 +82,7 @@ app.get('/short', async (req, res) => {
           });
         });
 
-        res.status(302).send(postsList);
+        res.status(200).send(postsList);
       }
     })
     .catch((err) => {
@@ -119,7 +119,7 @@ app.get('/home/main-post', async (req, res) => {
           });
         });
 
-        res.status(302).send(postsList);
+        res.status(200).send(postsList);
       }
     })
     .catch((err) => {
@@ -157,7 +157,7 @@ app.get('/home/news', async (req, res) => {
           });
         });
 
-        res.status(302).send(postsList);
+        res.status(200).send(postsList);
       }
     })
     .catch((err) => {
@@ -194,7 +194,7 @@ app.get('/home/most-recent-videos', async (req, res) => {
           });
         });
 
-        res.status(302).send(postsList);
+        res.status(200).send(postsList);
       }
     })
     .catch((err) => {
@@ -232,7 +232,7 @@ app.get('/home/tutorials', async (req, res) => {
           });
         });
 
-        res.status(302).send(postsList);
+        res.status(200).send(postsList);
       }
     })
     .catch((err) => {
@@ -244,47 +244,27 @@ app.get('/home/tutorials', async (req, res) => {
 
 app.get('/home/articles', async (req, res) => {
   const postsList = [];
-  console.log('userId:', req.userId);
   Post.find({
     type: 'Article',
   })
-    .sort({ publishedOn: -1 })
-    .limit(6)
-    .populate('cover')
-    .populate({
-      path: 'author',
-      populate: {
-        path: 'profileImage',
-        model: 'UserProfileImage',
-      },
-    })
-    .then((posts) => {
-      if (posts.lenth === 0) {
-        res.status(200).send({
-          found: false,
-        });
-      } else if (posts.length > 0) {
-        posts.map((post) => {
-          postsList.push({
-            id: post.id,
-            title: post.title,
-            slug: post.slug,
-            category: post.category,
-            cover: post.cover,
-            author: post.author,
-            publishedOn: post.publishedOn,
-            updateOn: post.updateOn,
-          });
-        });
-
-        res.status(302).send(postsList);
-      }
-    })
-    .catch((err) => {
-      res.json({
-        err,
-      });
+  .sort({ publishedOn: -1 })
+  .limit(6)
+  .populate('cover')
+  .populate({
+    path: 'author',
+    populate: {
+      path: 'profileImage',
+      model: 'UserProfileImage',
+    },
+  })
+  .then((posts) => {
+    res.status(200).send(posts);
+  })
+  .catch((err) => {
+    res.json({
+      err,
     });
+  });
 });
 
 app.get('/most/recent/post', async (req, res) => {
@@ -320,7 +300,7 @@ app.get('/most/recent/post', async (req, res) => {
           });
         });
 
-        res.status(302).send(postsList);
+        res.status(200).send(postsList);
       }
     })
     .catch((err) => {
@@ -332,6 +312,7 @@ app.get('/most/recent/post', async (req, res) => {
 
 app.get('/get/top-authors', async (req, res) => {
   User.find()
+    .limit(3)
     .populate('profileImage')
     .then((users) => {
       res.status(200).send(users);
@@ -408,7 +389,7 @@ app.get('/get/slug/:year/:month/:day/:slug', (req, res) => {
           updatedOn: post.updatedOn,
         });
       });
-      res.status(302).send(posts);
+      res.status(200).send(posts);
     })
     .catch((err) => {
       res.json({
@@ -451,7 +432,7 @@ app.get('/get/category/:category', async (req, res) => {
           updateOn: post.updateOn,
         });
       });
-      res.status(302).send(postsList);
+      res.status(200).send(postsList);
     })
     .catch((err) => {
       res.json({
@@ -564,7 +545,7 @@ app.get('/get/categories/newest/:number', async (req, res) => {
         postsList.push(post.category);
       });
       const uniquePostsList = postsList.filter((v, i, a) => a.indexOf(v) === i);
-      res.status(302).send(uniquePostsList.splice(0, number));
+      res.status(200).send(uniquePostsList.splice(0, number));
     })
     .catch((err) => {
       res.json({
@@ -610,7 +591,7 @@ app.get('/get/tag/:tag', async (req, res) => {
             publishedOn: post.publishedOn,
           });
         });
-        res.status(302).send(postsList);
+        res.status(200).send(postsList);
       }
     })
     .catch((err) => {
