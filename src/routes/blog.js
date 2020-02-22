@@ -355,15 +355,21 @@ app.post('/get/user/activities', (req, res) => {
 // Get Podcast by slug
 app.get('/get/slug/:year/:month/:day/:slug', (req, res) => {
   console.log('Getting post by slug');
+
   const {
     year,
     month,
     day,
     slug,
   } = req.params;
+  console.log(year)
+  console.log(month)
+  console.log(day)
+  console.log(slug)
 
   const fullSlug = `${year}/${month}/${day}/${slug}`;
   const postsList = [];
+  console.log('fullSlug:', fullSlug)
   Post.find({
     slug: fullSlug,
   }).populate('cover')
