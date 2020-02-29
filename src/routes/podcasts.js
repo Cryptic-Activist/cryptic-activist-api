@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
           });
           console.log(podcastList);
         });
-        res.status(302).send(podcastList);
+        res.status(200).send(podcastList);
       }
     })
     .catch((err) => {
@@ -79,7 +79,7 @@ app.get('/short', (req, res) => {
           });
           console.log(podcastList);
         });
-        res.status(302).send(podcastList);
+        res.status(200).send(podcastList);
       }
     })
     .catch((err) => {
@@ -98,7 +98,7 @@ app.get('/get/categories/newest/:number', async (req, res) => {
         podcastsList.push(podcast.category);
       });
       const uniquePostsList = podcastsList.filter((v, i, a) => a.indexOf(v) === i);
-      res.status(302).send(uniquePostsList.splice(0, number));
+      res.status(200).send(uniquePostsList.splice(0, number));
     })
     .catch((err) => {
       res.json({
@@ -139,7 +139,7 @@ app.get('/:id', (req, res) => {
     id,
   })
     .then((podcast) => {
-      res.status(302).send({
+      res.status(200).send({
         msg: 'Requested Podcast has been found.',
         id: podcast.id,
         type: podcast.type,
@@ -192,7 +192,7 @@ app.get('/get/slug/:year/:month/:day/:slug', (req, res) => {
           updatedOn: podcast.updatedOn,
         });
       });
-      res.status(302).send(podcasts);
+      res.status(200).send(podcasts);
     })
     .catch((err) => {
       res.json({
@@ -228,7 +228,7 @@ app.get('/get/category/:category', async (req, res) => {
           updateOn: podcast.updateOn,
         });
       });
-      res.status(302).send(podcasts);
+      res.status(200).send(podcasts);
     })
     .catch((err) => {
       res.json({
@@ -269,7 +269,7 @@ app.get('/get/tag/:tag', async (req, res) => {
             uploadedOn: podcast.uploadedOn,
           });
         });
-        res.status(302).send(podcastsList);
+        res.status(200).send(podcastsList);
       }
     })
     .catch((err) => {
@@ -320,7 +320,7 @@ app.get('/get/category/newest/:category/:year/:month/:day/:slug', async (req, re
       if (podcastList.length > 4) {
         podcastList = podcastList.slice(0, 4);
       }
-      res.status(302).send(podcastList);
+      res.status(200).send(podcastList);
     })
     .catch((err) => {
       res.json({

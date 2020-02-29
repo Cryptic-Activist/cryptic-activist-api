@@ -612,6 +612,8 @@ app.put('/update/post/how-many-read', (req, res) => {
     slug,
     howManyReadNumber,
   } = req.body;
+  console.log('slug:', slug)
+  console.log('howManyread:', howManyReadNumber)
   Post.updateOne({
     slug,
   }, {

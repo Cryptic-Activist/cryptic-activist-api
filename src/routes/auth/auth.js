@@ -449,7 +449,7 @@ app.get('/user/:id', (req, res) => {
   .populate('profileImage')
   .then((userInfo) => {
     user = userInfo;
-    res.status(302).send(userInfo)
+    res.status(200).send(userInfo)
   })
   .catch((err) => {
     console.log(err)
