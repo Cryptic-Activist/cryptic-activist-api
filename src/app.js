@@ -58,7 +58,6 @@ app.use('/blog/contributor', require('./routes/contributor/blog'));
 app.use('/admin/blog', require('./routes/admin/blog/blog'));
 app.use('/admin/user', require('./routes/admin/user/user'));
 
-
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
   useNewUrlParser: true,
