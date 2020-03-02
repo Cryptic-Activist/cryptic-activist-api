@@ -19,14 +19,11 @@ const config = require('./config/config.js');
 
 require('dotenv').config();
 
-
 const app = express();
 app.use(cors());
 
-
 app.use(express.json());
 
-// Bodyparser
 app.use(express.urlencoded({
   extended: false,
 }));
@@ -40,14 +37,12 @@ app.use(
   }),
 );
 
-
 // Switch file storage from development to production
 app.use(morgan('dev'));
 app.use(
   '/files',
   express.static(path.resolve(__dirname, '.', 'tmp', 'uploads')),
 );
-
 
 // Routes
 app.use('/auth', require('./routes/auth/auth'));
