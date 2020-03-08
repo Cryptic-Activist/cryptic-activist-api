@@ -10,6 +10,7 @@ app.use(cors());
 
 // Load Podcast model
 const Podcast = require('../models/podcast/Podcast');
+const PodcastComment = require('../models/podcast/PodcastComment')
 const PodcastAudioFile = require('../models/podcast/PodcastAudioFile');
 const PodcastCover = require('../models/podcast/PodcastCover');
 
@@ -130,6 +131,35 @@ app.get('/cover', async (req, res) => {
   });
 
   return res.json(podcastCover);
+});
+
+app.post('/comments/', async (req, res) => {
+  const {
+    podcastId
+  } = req.body;
+
+  console.log('comments:', podcastId)
+
+  PodcastComment.find({
+    podcast: podcastId,
+  })
+    .populate({
+      path: 'author',
+      populate: {
+        path: 'profileImage',
+        model: 'UserProfileImage',
+      },
+    })
+    .then((commentsArray) => {
+      console.log('commentsArray:', commentsArray)
+      res.json(commentsArray)
+    })
+    .catch((err) => {
+      res.json({
+        err,
+      })
+    })
+
 });
 
 // Get Podcast by id

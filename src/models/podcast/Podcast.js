@@ -54,6 +54,13 @@ const PodcastSchema = new mongoose.Schema({
     required: false,
     default: '',
   },
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+      required: false,
+    }
+  ],
   uploadedOn: {
     type: Date,
     default: Date.now,

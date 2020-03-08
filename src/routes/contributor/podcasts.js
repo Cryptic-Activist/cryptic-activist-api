@@ -6,24 +6,24 @@ const uuidv4 = require('uuid/v4');
 
 app.use(cors());
 
-const Post = require('../../models/blog/Post');
+const Podcast = require('../../models/podcast/Podcast');
 const User = require('../../models/user/User');
-const Comment = require('../../models/blog/PostComment');
-const CommentReply = require('../../models/blog/PostCommentReply');
+const Comment = require('../../models/podcast/PodcastComment');
+const CommentReply = require('../../models/podcast/PodcastCommentReply');
 
-app.post('/comment/post', async (req, res) => {
+app.post('/comment/podcast', async (req, res) => {
   const {
-    postId,
+    podcastId,
     userId,
     content,
   } = req.body;
 
-  console.log('postId:', postId)
-  console.log('userId:', userId)
-  console.log('content:', content)
+  console.log('podcastId:', podcastId);
+  console.log('userId:', userId);
+  console.log('content:', content);
 
   const errors = [];
-  if (!postId || !userId || !content) {
+  if (!podcastId || !userId || !content) {
     errors.push({
       errorMsg: 'Please enter all fields.',
     })
@@ -43,7 +43,7 @@ app.post('/comment/post', async (req, res) => {
     const newComment = new Comment({
       id,
       author: userId,
-      post: postId,
+      podcast: podcastId,
       content,
       publishedOn,
       updatedOn,
@@ -54,7 +54,7 @@ app.post('/comment/post', async (req, res) => {
     await newComment
       .save()
       .then((comment) => {
-        console.log('comment:', comment)
+        // console.log('comment:', comment)
         commentObj = comment;
         commentId = comment._id;
       })
@@ -66,12 +66,14 @@ app.post('/comment/post', async (req, res) => {
       })
 
     try {
-      const PostObj = await Post.findOne({
-        _id: postId,
+      const PodcastObj = await Podcast.findOne({
+        _id: podcastId,
       });
 
-      let postObjComments = await PostObj.comments;
-      console.log('commentId:', commentId)
+      console.log('PodcastObj.comments:', PodcastObj)
+
+      let postObjComments = await PodcastObj.comments;
+      // console.log('postObjComments:', postObjComments)
       
       const CommentObj = await Comment.findOne({
         _id: commentId,
@@ -82,12 +84,10 @@ app.post('/comment/post', async (req, res) => {
           model: 'UserProfileImage',
         },
       })
-      
-      console.log('CommentObj:', CommentObj)
 
       postObjComments.push(commentId)
-      await Post.updateOne({
-        _id: postId,
+      await Podcast.updateOne({
+        _id: podcastId,
       }, {
         comments: postObjComments,
       }, {
@@ -105,7 +105,7 @@ app.post('/comment/post', async (req, res) => {
 
 app.post('/comment/reply', async (req, res) => {
   const {
-    postId,
+    podcastId,
     commentId,
     userId,
     content,
@@ -114,7 +114,7 @@ app.post('/comment/reply', async (req, res) => {
   console.log('commentId:', commentId)
 
   const errors = [];
-  if (!postId || !userId || !content || !commentId) {
+  if (!podcastId || !userId || !content || !commentId) {
     errors.push({
       errorMsg: 'Please enter all fields.',
     })
@@ -132,7 +132,7 @@ app.post('/comment/reply', async (req, res) => {
     const newCommentReply = new CommentReply({
       id,
       author: userId,
-      post: postId,
+      podcast: podcastId,
       comment: commentId,
       content,
       publishedOn,
@@ -153,8 +153,8 @@ app.post('/comment/reply', async (req, res) => {
     })
 
     try {
-      const PostObj = await Post.findOne({
-        _id: postId,
+      const PodcastObj = await Podcast.findOne({
+        _id: podcastId,
       });
       const CommentObj = await Comment.findOne({
         _id: commentId,
@@ -164,7 +164,7 @@ app.post('/comment/reply', async (req, res) => {
       commentObjReplies.push(commentIdVar)
       console.log('commentObjReplies:', commentObjReplies)
       await Comment.updateOne({
-        _id: postId,
+        _id: podcastId,
       }, {
         replies: commentObjReplies,
       }, {
@@ -181,23 +181,23 @@ app.post('/comment/reply', async (req, res) => {
 
 })
 
-app.get('/verify/exist/post/:postId',  async (req, res) => {
+app.get('/verify/exist/podcast/:podcastId',  async (req, res) => {
   const {
-    postId,
+    podcastId,
   } = req.params;
 
   const errors = [];
-  if (!postId) {
+  if (!podcastId) {
     errors.push({
       errorMsg: 'Please enter all fields.',
     })
   }
 
-  Post.findOne({
-    _id: postId,
+  Podcast.findOne({
+    _id: podcastId,
   })
-    .then((post) => {
-        res.status(200).json(post)
+    .then((podcast) => {
+        res.status(200).json(podcast)
     })
     .catch((err) => {
       res.json({
@@ -221,8 +221,8 @@ app.get('/verify/exist/comment/:commentId',  async (req, res) => {
   Comment.findOne({
     _id: commentId,
   })
-    .then((post) => {
-        res.status(200).json(post)
+    .then((podcast) => {
+        res.status(200).json(podcast)
     })
     .catch((err) => {
       res.json({

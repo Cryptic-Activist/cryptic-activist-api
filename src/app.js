@@ -50,6 +50,7 @@ app.use('/auth', require('./routes/auth/auth'));
 app.use('/homepage', require('./routes/homepage'));
 app.use('/users', require('./routes/users'));
 app.use('/podcasts', require('./routes/podcasts'));
+app.use('/podcasts/contributor', require('./routes/contributor/podcasts'));
 app.use('/courses', require('./routes/courses'));
 app.use('/blog', require('./routes/blog'));
 app.use('/blog/contributor', require('./routes/contributor/blog'));

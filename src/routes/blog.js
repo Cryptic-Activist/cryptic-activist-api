@@ -578,6 +578,7 @@ app.get('/get/tag/:tag', async (req, res) => {
   } else if (tag.indexOf('-') === -1) {
     newTag = tag;
   }
+  
   Post.find({
     tags: newTag,
   })
@@ -593,8 +594,10 @@ app.get('/get/tag/:tag', async (req, res) => {
           postsList.push({
             title: post.title,
             slug: post.slug,
-            coverUrl: post.cover.url,
+            category: post.category,
+            cover: post.cover,
             publishedOn: post.publishedOn,
+            updateOn: post.updateOn,
           });
         });
         res.status(200).send(postsList);
