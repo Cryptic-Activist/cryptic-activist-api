@@ -27,26 +27,20 @@ app.get('/', async (req, res) => {
     .limit(pagination)
     .populate('cover')
     .then((posts) => {
-      if (posts.length === 0) {
-        res.status(200).send({
-          found: false,
-        });
-      } else if (posts.length > 0) {
-        posts.map((post) => postsList.push({
-          id: post.id,
-          title: post.title,
-          category: post.category,
-          content: post.content,
-          slug: post.slug,
-          cover: post.cover,
-          type: post.type,
-          author: post.author,
-          publishedOn: post.publishedOn,
-          updateOn: post.updateOn,
-        }));
-        // console.log('postsList:', posts);
-        res.status(200).send(postsList);
-      }
+      posts.map((post) => postsList.push({
+        id: post.id,
+        title: post.title,
+        category: post.category,
+        content: post.content,
+        slug: post.slug,
+        cover: post.cover,
+        type: post.type,
+        author: post.author,
+        publishedOn: post.publishedOn,
+        updateOn: post.updateOn,
+      }));
+      // console.log('postsList:', posts);
+      res.status(200).send(postsList);
     })
     .catch((err) => {
       res.json({
