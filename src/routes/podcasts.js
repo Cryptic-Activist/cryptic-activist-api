@@ -208,10 +208,12 @@ app.get('/get/slug/:year/:month/:day/:slug', (req, res) => {
     .then((podcasts) => {
       podcasts.map((podcast) => {
         podcastList.push({
+          _id: podcast._id,
           id: podcast.id,
           type: podcast.type,
           slug: podcast.slug,
           category: podcast.category,
+          cover: podcast.cover,
           title: podcast.title,
           description: podcast.description,
           googleEpisodeUrl: podcast.googleEpisodeUrl,
@@ -222,6 +224,37 @@ app.get('/get/slug/:year/:month/:day/:slug', (req, res) => {
           updatedOn: podcast.updatedOn,
         });
       });
+      console.log('resultList:', podcastList)
+      res.status(200).send(podcastList);
+    })
+    .catch((err) => {
+      res.json({
+        found: false,
+        error: err,
+      });
+    });
+});
+
+// Get Audio Podcast by slug
+app.get('/get/slug/:year/:month/:day/:slug', (req, res) => {
+  const {
+    year,
+    month,
+    day,
+    slug,
+  } = req.params;
+  console.log('year:', year);
+  console.log('month:', month);
+  console.log('day:', day);
+  console.log('slug:', slug);
+
+  const fullSlug = `${year}/${month}/${day}/${slug}`;
+  const podcastList = [];
+  Podcast.find({
+    slug: fullSlug,
+  }).populate('audioFile')
+    .populate('cover')
+    .then((podcasts) => {
       res.status(200).send(podcasts);
     })
     .catch((err) => {
