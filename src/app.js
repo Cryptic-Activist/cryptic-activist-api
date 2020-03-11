@@ -15,7 +15,7 @@ process.env.NODE_ENV = 'development';
 
 // config variables
 // eslint-disable-next-line no-unused-vars
-const config = require('./config/config.js');
+const config = require('./config/config');
 
 require('dotenv').config();
 
@@ -54,7 +54,8 @@ app.use('/podcasts/contributor', require('./routes/contributor/podcasts'));
 app.use('/courses', require('./routes/courses'));
 app.use('/blog', require('./routes/blog'));
 app.use('/blog/contributor', require('./routes/contributor/blog'));
-// app.use('/admin/podcasts', require('./routes/admin/podcasts/podcasts'));
+
+app.use('/admin/podcasts', require('./routes/admin/podcasts/podcasts'));
 // app.use('/admin/courses', require('./routes/admin/courses/courses'));
 app.use('/admin/blog', require('./routes/admin/blog/blog'));
 app.use('/admin/user', require('./routes/admin/user/user'));
