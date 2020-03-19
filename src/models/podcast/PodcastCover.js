@@ -23,8 +23,9 @@ const PodcastCoverSchema = new mongoose.Schema({
 });
 
 PodcastCoverSchema.pre('save', function () {
+  console.log('this.key:', this.key)
   if (!this.url) {
-    this.url = `${process.env.APP_URL}/files/${this.key}`;
+    this.url = `https://${process.env.BUCKET_NAME}.s3.amazonaws.com/${this.key}`;
   }
 });
 
